@@ -1,0 +1,40 @@
+""" 
+    pytech_queries.py
+"""
+#Steven Spencer
+#pytech_queries.py
+#CYBR 410 T 302
+
+#import pymongo
+from pymongo import MongoClient
+
+#mongoDB Connection URL
+url = "mongodb+srv://admin:admin@cluster0.huyp4.mongodb.net/cybr?retryWrites=true&w=majority"
+
+#connect to the MongoDB 
+client = MongoClient(url)
+
+#connect to the pytech database
+db = client.pytech
+
+#get collection for students
+students = db.students
+
+#find the students in the list
+student_list = students.find({})
+
+print("\n  - Display Students From List-")
+
+#get all the students by student id, list out id, first name, last name
+for doc in student_list:
+    print("  Student ID: " + doc["student_id"] + "\n  First Name: " + doc["first_name"] + "\n  Last Name: " + doc["last_name"] + "\n")
+
+#get individual students by ID number
+tony = students.find_one({"student_id": "1007"})
+
+#print output
+print("\n  - Display Student from One ID-")
+print("  Student ID: " + tony["student_id"] + "\n  First Name: " + tony["first_name"] + "\n  Last Name: " + tony["last_name"] + "\n")
+
+#end program 
+input("\n\n  End of program, press any key to continue...")
