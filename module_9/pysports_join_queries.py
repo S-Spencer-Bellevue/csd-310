@@ -24,33 +24,20 @@ try:
     
     cursor = db.cursor()
     
-    #select query from team
-    cursor.execute("SELECT team_id, team_name, mascot FROM team")
-
-    #results
-    teams = cursor.fetchall()
-    
-    #output
-    print("\n -DISPLAYING TEAM RECORDS- ")
-    
-    #iteration for teams
-    for team in teams:
-        print(" Team ID: {}\n Team Name: {}\n Mascot: {}\n".format(team[0], team[1], team[2]))
-
-    #query player table
-    cursor.execute("SELECT player_id, first_name, last_name, team_id FROM player")
-
+    #inner join
+    cursor.execute("SELECT player_id, first_name, last_name, team_name FROM player INNER JOIN team ON player.team_id = team.team_id")
     #results
     players = cursor.fetchall()
 
-    #output
-    print("\n -DISPLAYING PLAYER RECORDS'")
-
-    #iteration for player
+    #print
+    print("\n  -- DISPLAYING PLAYER RECORDS --")
+    
+    #forloop for iteration
     for player in players:
-        print(" Player ID: {}\n First Name: {}\n Last Name: {}\n Team ID: {}\n".format(player[0], player[1], player[2], player[3]))
+        print("  Player ID: {}\n  First Name: {}\n  Last Name: {}\n  Team Name: {}\n".format(player[0], player[1], player[2], player[3]))
 
-    input("\n\n Press any key to continue...")
+    input("\n  Press any key to continue.. ")
+
 
 
 finally:
