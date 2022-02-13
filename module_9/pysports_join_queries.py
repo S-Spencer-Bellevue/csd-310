@@ -7,7 +7,6 @@
 ##import
 
 import mysql.connector
-##from mysql.connector import errorcode
 
 ##config for pysports
 config = {
