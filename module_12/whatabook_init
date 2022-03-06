@@ -1,0 +1,96 @@
+/*whatabook.py
+#   Name:Steven Spencer with code selection from Professor Krasso
+#   Class: CYBR 410 T302 Winter 2021
+#   user initiation along with insertion of initial users into whatabook database. 
+NOTE: ***************************************
+UTILIZE CREATE DATABASE whatabook; in the MySQL client for database creation, as shown as approved in Module 10
+****************************************
+
+#create user
+*/
+
+CREATE USER 'whatabook_user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'MySQL8IsGreat!';
+
+/*#ensure privileges for all are assigned to user*/
+GRANT ALL PRIVILEGES ON whatabook.* TO 'whatabook_user'@'localhost';
+
+
+/*#create tables*/
+CREATE TABLE store (
+    store_id INT    NOT NULL   AUTO_INCREMENT,
+    locale VARCHAR(500)     NOT NULL,
+    PRIMARY KEY(store_id)
+);
+CREATE TABLE book(
+    book_id INT     NOT NULL    AUTO_INCREMENT,
+    book_name VARCHAR(200)  NOT NULL, 
+    author VARCHAR(200)     NOT NULL,
+    details VARCHAR(500),
+    PRIMARY KEY(book_id)
+);
+CREATE TABLE user(
+    user_id INT     NOT NULL    AUTO_INCREMENT,
+    first_name VARCHAR(75)     NOT NULL,
+    last_name VARCHAR(75)   NOT NULL,
+    PRIMARY KEY(user_id)
+);
+CREATE TABLE wishlist(
+    wishlist_id INT     NOT NULL    AUTO_INCREMENT,
+    user_id INT     NOT NULL,
+    book_id INT     NOT NULL,
+    PRIMARY KEY (wishlist_id),
+    CONSTRAINT fk_book
+    FOREIGN KEY (book_id)
+        REFERENCES book(book_id),
+    CONSTRAINT fk_user
+    FOREIGN KEY(user_id)
+        REFERENCES user(user_id)
+
+
+);
+/*#store insert for locale*/
+INSERT INTO store(locale)
+    VALUES('685 West Everest St, Chesapeake, VA 55555');
+
+/*#insert 9 books*/
+INSERT INTO book(book_name, author, details)
+    VALUES('Do Not Touch Me', 'George Farland', 'The first do not touch me book in a series');
+INSERT INTO book(book_name, author, details)
+    VALUES('Do Not Touch Me Again', 'George Farland', 'The second do not touch me book in a series');
+INSERT INTO book(book_name, author, details)
+    VALUES('I Told You Not To Touch Me', 'George Farland', 'The third do not touch me book in a series');
+INSERT INTO book(book_name, author, details)
+    VALUES('What did I say About Touching Me', 'George Farland', 'The fourth do not touch me book in a series');
+INSERT INTO book(book_name, author, details)
+    VALUES('I asked Nicely', 'George Farland', 'The prequel to the do not touch me series');
+INSERT INTO book(book_name, author, details)
+    VALUES('Dragons and How to Breed Them', 'Harry Potter', 'The tell all story of breeding dragons');
+INSERT INTO book(book_name, author, details)
+    VALUES('Dragons Bite Hard', 'Hermoine Granger', 'The story of a lost hat while fighting dragons');
+INSERT INTO book(book_name, author, details)
+    VALUES('What Remained of My Hat', 'Hermoine Granger', 'The leftovers from a dragon and its attempts to dissolve a hat');
+
+/*#insert 3 users*/
+INSERT INTO user(first_name, last_name)
+    VALUES('Mark', 'Smith');
+INSERT INTO user(first_name, last_name)
+    VALUES('Jim', 'Cramer');
+INSERT INTO user(first_name, last_name)
+    VALUES('Jodie', 'Ford');
+
+/*#insert wishlist for each user*/
+INSERT INTO wishlist(user_id, book_id) 
+    VALUES (
+        (SELECT user_id FROM user WHERE first_name = 'Mark'), 
+        (SELECT book_id FROM book WHERE book_name = 'What Remained of My Hat')
+    );
+INSERT INTO wishlist(user_id, book_id)
+    VALUES (
+        (SELECT user_id FROM user WHERE first_name = 'Jim'),
+        (SELECT book_id FROM book WHERE book_name = 'I asked Nicely')
+    );
+INSERT INTO wishlist(user_id, book_id)
+    VALUES (
+        (SELECT user_id FROM user WHERE first_name = 'Jodie'),
+        (SELECT book_id FROM book WHERE book_name = 'Do Not Touch Me')
+    );
